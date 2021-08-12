@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 15)
+    bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
                 email: req.body.email,
@@ -32,6 +32,7 @@ exports.login = (req, res, next) => {
                     }
                     res.status(200).json({
                         userId: user._id,
+                        /****fonction sign encode un nouveau token */
                         token: jwt.sign(
                             {userId: user._id},
                             'RANDOM_TOKEN_SECRET',
