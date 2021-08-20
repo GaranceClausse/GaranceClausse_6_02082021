@@ -57,6 +57,56 @@ exports.getAllSauces = (req, res, next) => {
 };
 
 exports.likeOneSauce = (req, res, next) => {
+    const like = req.body.like;
+    const userId = req.body.userId;
+    const usersLiked = req.body.usersLiked;
+    const usersDisliked = req.body.usersDisliked;
+
+    Sauce.findOne({ _id: req.params.id })
+        .then(() => {
+            switch (like) {
+                case 1:
+                    Sauce.updateOne(
+                        { _id: req.params.id },
+                        { $push: { usersLiked: userId }, $inc: { likes: +1 } }
+                    )
+                        .then(() => res.status(200).json('sauce likée'))
+                        .catch(error => res.status(400).json({ error: error }));
+                    break;
+            }
+            switch (like) {
+                case -1:
+                    Sauce.updateOne(
+                        { _id: req.params.id },
+                        { $push: { usersDisliked: userId }, $inc: { dislikes: -1}}
+                    )
+                        .then(() => res.status(200).json('sauce dislikée'))
+                        .catch(error => res.status(400).json({ error: error }));
+                    break;
+            } 
+            switch (like) {
+                case (0 && userId === usersLiked):
+                    Sauce.updateOne(
+                        { _id: req.params.id },
+                        { $pull: { usersLiked: userId}, $inc: { likes: -1}}
+                    )
+                        .then(() => res.status(200).json("vous avez changé d'avis sur cette sauce!"))
+                        .catch(error => res.status(400).json({ error: error }));
+                    break;
+            }
+            switch (like) {
+                case (0 && userId === usersDisliked ):
+                    Sauce.updateOne(
+                        { _id: req.params.id },
+                        { $pull: { usersDisliked: userId}, $inc: {dislikes: +1}}
+                    )
+                        .then(() => res.status(200).json("vous avez changé d'avis sur cette sauce!"))
+                        .catch(error => res.status(400).json({ error: error }));
+                    break;
+            }
+            
+        })
+    /*
     Sauce.findOneAndUpdate({ _id: req.params.id }, {$inc : {likes: +1, dislikes: -1}},{ $push: { usersLiked: req.params.userId , usersDisliked: req.params.userId} })
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error: error }));
