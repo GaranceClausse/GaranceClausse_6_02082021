@@ -20,7 +20,8 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
-    "helmet": "^4.6.0",
+    "express-validator": "^6.12.1",
+    "helmet-csp": "^3.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.7",
     "mongoose-unique-validator": "^2.0.3",

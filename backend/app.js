@@ -2,13 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-var helmet = require('helmet');
+var helmet = require('helmet-csp');
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
 
 const app = express();
+
+app.use(helmet())
 
 /***Connecte notre serveur à mongodb / la base de donnée */
 mongoose.connect('mongodb+srv://garance4242:newAPI@cluster0.nyzjj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -23,15 +25,15 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.setHeader("Content-Security-Policy", "default-src img-src * 'self' images");
     next();
 });
 
-app.use(helmet());
 
 app.use(bodyParser.json());
 
 app.use(express.static('../frontend'));
-app.use('/api/sauce', sauceRoutes);
+app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
