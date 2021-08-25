@@ -8,15 +8,20 @@ const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
 
+
+require('dotenv').config({ path: process.cwd() + '/.env' });
+
 const app = express();
 
-app.use(helmet())
+app.use(helmet());
 
 /***Connecte notre serveur à mongodb / la base de donnée */
-mongoose.connect('mongodb+srv://garance4242:newAPI@cluster0.nyzjj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`, 
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true,
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
