@@ -64,9 +64,6 @@ exports.likeOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(() => {
             if (like === 1) {
-                
-                
-                console.log(Sauce.find({usersLiked: {$elemMatch : {userId : "61151b588f97205a2c52d416"}}}));
                 Sauce.updateOne(
                     { _id: req.params.id },
                     { $push: { usersLiked: userId }, $inc: { likes: +1 } }
@@ -102,46 +99,3 @@ exports.likeOneSauce = (req, res, next) => {
         .catch(error => res.status(500).json({ error : 'la fonction ne marche pas' }))
 
 };
-            /*
-            switch (like) {
-                case 0 :
-                    Sauce.updateOne(
-                        { _id: req.params.id },
-                        { $pull: { userLiked: userId }, $inc: { likes: -1, dislikes: 0 } }
-                    )
-                        .then(() => res.status(200).json("vous ne likez plus cette sauce!"))
-                        .catch(error => res.status(400).json({ error: error }));
-                    break;
-            }/*
-            switch (like) {
-                case (0 && sauce.userDisliked.includes(userId)):
-
-                    Sauce.updateOne(
-                        { _id: req.params.id },
-                        { $pull: { userDisliked: userId }, $inc: { dislikes: +1, likes: 0 } }
-                    )
-                        .then(() => res.status(200).json("vous ne dislikez plus cette sauce!"))
-                        .catch(error => res.status(400).json({ error: error }));
-                    break;
-            }*/
-
-    /*
-    Sauce.findOneAndUpdate({ _id: req.params.id }, {$inc : {likes: +1, dislikes: -1}},{ $push: { userLiked: req.params.userId , userDisliked: req.params.userId} })
-        .then(sauces => res.status(200).json(sauces))
-        .catch(error => res.status(400).json({ error: error }));
-
-       
-    /*.then(sauce => {
-        const saucelike = sauce.like ?
-            {
-                ...JSON.parse(req.body.sauce),
-                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-
-            } : { ...req.body };
-
-        Sauce.updateOne({ _id: req.params.id })
-            .then(() => res.status(200).json({ message: 'Sauce likée' }))
-            .catch(error => res.status(400).json({ error }));
-
-    })*/
-    

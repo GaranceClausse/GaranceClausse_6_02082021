@@ -19,11 +19,13 @@
   "homepage": "https://github.com/GaranceClausse/GaranceClausse_6_02082021#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.3.0",
     "express-validator": "^6.12.1",
     "helmet-csp": "^3.4.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.7",
+    "mongoose": "^5.13.8",
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.3",
     "save": "^2.4.0"
