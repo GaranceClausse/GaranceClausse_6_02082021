@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-var helmet = require('helmet-csp');
+const contentSecurityPolicy = require("helmet-csp");
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -13,7 +13,19 @@ require('dotenv').config({ path: process.cwd() + '/.env' });
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      defaultSrc: ["'self'", "img-src *", "images"],
+      scriptSrc: ["'self'", "js.example.com"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+    reportOnly: false,
+  })
+);
+
 
 /***Connecte notre serveur à mongodb / la base de donnée */
 
@@ -30,7 +42,6 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.setHeader("Content-Security-Policy", "default-src img-src * 'self' images");
     next();
 });
 
